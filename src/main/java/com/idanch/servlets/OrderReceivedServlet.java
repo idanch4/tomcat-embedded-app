@@ -2,19 +2,19 @@ package com.idanch.servlets;
 
 import com.idanch.data.IdansRestaurant;
 import com.idanch.data.RestaurantOrder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
 public class OrderReceivedServlet extends HttpServlet {
-	
-	public void service (HttpServletRequest req, HttpServletResponse resp) throws IOException {
 
-		resp.setContentType("text/html");
+	public static final Logger log = LoggerFactory.getLogger(OrderReceivedServlet.class);
 
+	public void doPost (HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		RestaurantOrder order = IdansRestaurant.newOrder();
 		for (String dishName: IdansRestaurant.getMenu().getAllDishNames()) {
 			String quantity = req.getParameter(dishName);
@@ -23,20 +23,10 @@ public class OrderReceivedServlet extends HttpServlet {
 					int quantityInt = Integer.parseInt(quantity);
 					order.addToOrder(dishName, quantityInt);
 				}catch (NumberFormatException nfe) {
-					//TODO:: log this
+					log.error("An order quantity parameter of " + dishName + " was null - thus ignored");
 				}
 			}
 		}
-
-		PrintWriter out = resp.getWriter();
-		resp.setContentType("text/html");
-		out.println("<html><body><h1>Ricky's Restaurant</h1>");
-		out.println("<h2>Order your food</h2>");
-		
-		out.println("Thank you - your order has been received. You need to pay $" +
-				order.calculateOrderPrice());
-				
-		out.println("</body></html>");
-		out.close();
+		resp.sendRedirect("/thankYou.html?totalPrice=" + order.calculateOrderPrice());
 	}
 }

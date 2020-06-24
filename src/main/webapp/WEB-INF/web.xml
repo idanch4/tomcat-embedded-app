@@ -24,6 +24,11 @@
         <servlet-class>com.idanch.servlets.OrderReceivedServlet</servlet-class>
     </servlet>
 
+    <servlet>
+        <servlet-name>ThankYouServlet</servlet-name>
+        <servlet-class>com.idanch.servlets.ThankYouServlet</servlet-class>
+    </servlet>
+
     <servlet-mapping>
         <servlet-name>QueryDishesServlet</servlet-name>
         <url-pattern>/searchResults.html</url-pattern>
@@ -37,5 +42,10 @@
     <servlet-mapping>
         <servlet-name>OrderReceivedServlet</servlet-name>
         <url-pattern>/orderReceived.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ThankYouServlet</servlet-name>
+        <url-pattern>/thankYou.html</url-pattern>
     </servlet-mapping>
 </web-app>
