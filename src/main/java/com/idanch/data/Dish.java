@@ -2,11 +2,13 @@ package com.idanch.data;
 
 public class Dish {
     private String name;
+    private int priceShekels;
     private String description;
 
-    public Dish(String name, String description) {
+    public Dish(String name, String description, int priceShekels) {
         setName(name);
         this.description = description;
+        this.priceShekels = priceShekels;
     }
 
     public String getName() {
@@ -23,6 +25,14 @@ public class Dish {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getPriceShekels() {
+        return priceShekels;
+    }
+
+    public void setPriceShekels(int priceShekels) {
+        this.priceShekels = priceShekels;
     }
 
     @Override
@@ -45,6 +55,7 @@ public class Dish {
         return "Dish{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", priceShekels='" + priceShekels + '\'' +
                 '}';
     }
 }

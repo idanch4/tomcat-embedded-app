@@ -1,39 +1,40 @@
 package com.idanch.data;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Menu {
-    private List<Dish> menu = new ArrayList<>();
+    private Map<String,Dish> menu = new HashMap<>();
 
     public boolean add(Dish dish) {
-        if (!isOnMenu(dish)) {
-            menu.add(dish);
+        if (!menu.containsKey(dish.getName())) {
+            menu.put(dish.getName(), dish);
             return true;
         }
         return false;
     }
 
-    public boolean isOnMenu(Dish dish) {
-        return menu.contains(dish);
+    public boolean isOnMenu(String dishName) {
+        return menu.containsKey(dishName);
     }
 
     public List<Dish> findDishesByName(String query) {
-        List<Dish> results = new LinkedList<>();
-        for (Dish dish: menu) {
-            if (dish.getName().contains(query.toLowerCase())) {
-                results.add(dish);
-            }
-        }
-        return results;
+        return menu.values()
+                .stream()
+                .filter(v -> v.getName().contains(query.toLowerCase()))
+                .collect(Collectors.toList());
     }
 
-    public Dish findDish(String dishName) {
-        for (Dish dish : menu) {
-            if (dish.getName().equals(dishName.toLowerCase())) {
-                return dish;
-            }
-        }
-        return null;
+    public Dish getDish(String dishName) {
+        return menu.get(dishName);
+    }
+
+    public List<Dish> getAllDishes() {
+        return new ArrayList<>(menu.values());
+    }
+
+    public List<String> getAllDishNames() {
+        return new ArrayList<>(menu.keySet());
     }
 
     @Override

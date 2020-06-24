@@ -10,12 +10,32 @@
     </description>
 
     <servlet>
-        <servlet-name>queryDishesServlet</servlet-name>
-        <servlet-class>com.idanch.servlets.queryDishesServlet</servlet-class>
+        <servlet-name>QueryDishesServlet</servlet-name>
+        <servlet-class>com.idanch.servlets.QueryDishesServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>ListMenuServlet</servlet-name>
+        <servlet-class>com.idanch.servlets.ListMenuServlet</servlet-class>
+    </servlet>
+
+    <servlet>
+        <servlet-name>OrderReceivedServlet</servlet-name>
+        <servlet-class>com.idanch.servlets.OrderReceivedServlet</servlet-class>
     </servlet>
 
     <servlet-mapping>
-        <servlet-name>queryDishesServlet</servlet-name>
+        <servlet-name>QueryDishesServlet</servlet-name>
         <url-pattern>/searchResults.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>ListMenuServlet</servlet-name>
+        <url-pattern>/listMenu.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>OrderReceivedServlet</servlet-name>
+        <url-pattern>/orderReceived.html</url-pattern>
     </servlet-mapping>
 </web-app>

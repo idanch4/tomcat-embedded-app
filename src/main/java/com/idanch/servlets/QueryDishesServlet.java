@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
-public class queryDishesServlet extends HttpServlet {
+public class QueryDishesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         resp.setContentType("text/html");
