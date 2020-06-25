@@ -31,7 +31,7 @@
 
     <servlet-mapping>
         <servlet-name>QueryDishesServlet</servlet-name>
-        <url-pattern>/searchResults.html</url-pattern>
+        <url-pattern>/</url-pattern>
     </servlet-mapping>
 
     <servlet-mapping>
@@ -48,6 +48,30 @@
         <servlet-name>ThankYouServlet</servlet-name>
         <url-pattern>/thankYou.html</url-pattern>
     </servlet-mapping>
+
+    <!-- role tags are redundant in tomcat, added for complicity -->
+    <security-role>
+        <role-name>user</role-name>
+    </security-role>
+    <security-role>
+        <role-name>admin</role-name>
+    </security-role>
+
+    <security-constraint>
+        <web-resource-collection>
+            <web-resource-name>user pages</web-resource-name>
+            <url-pattern>/listMenu.html</url-pattern>
+            <url-pattern>/orderReceived.html</url-pattern>
+            <url-pattern>/thankYou.html</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <role-name>user</role-name>
+        </auth-constraint>
+    </security-constraint>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
 
     <session-config>
         <session-timeout>120</session-timeout>

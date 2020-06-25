@@ -70,6 +70,11 @@ public class Main {
         webResourceRoot.addPreResources(webResourceSet);
         ctx.setResources(webResourceRoot);
 
+        // add users manually
+        tomcat.addUser("idan", "1234");
+        tomcat.addRole("idan", "user");
+        tomcat.addRole("idan", "admin");
+
         tomcat.start();
         tomcat.getServer().await();
     }

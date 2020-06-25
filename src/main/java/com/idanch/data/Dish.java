@@ -2,7 +2,7 @@ package com.idanch.data;
 
 public class Dish {
     private String name;
-    private int priceShekels;
+    private double priceShekels;
     private String description;
 
     public Dish(String name, String description, int priceShekels) {
@@ -27,11 +27,11 @@ public class Dish {
         this.description = description;
     }
 
-    public int getPriceShekels() {
+    public double getPriceShekels() {
         return priceShekels;
     }
 
-    public void setPriceShekels(int priceShekels) {
+    public void setPriceShekels(double priceShekels) {
         this.priceShekels = priceShekels;
     }
 

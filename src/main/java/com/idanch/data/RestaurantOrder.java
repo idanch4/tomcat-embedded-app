@@ -27,8 +27,8 @@ public class RestaurantOrder {
         return quantity;
     }
 
-    public int calculateOrderPrice() {
-        int totalPrice = 0;
+    public double calculateOrderPrice() {
+        double totalPrice = 0;
         for (String dishName: order.keySet()) {
             Dish dishFromMenu = menu.getDish(dishName);
             if (dishFromMenu != null) {
