@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
 public class OrderReceivedServlet extends HttpServlet {
@@ -18,7 +19,7 @@ public class OrderReceivedServlet extends HttpServlet {
 		RestaurantOrder order = IdansRestaurant.newOrder();
 		for (String dishName: IdansRestaurant.getMenu().getAllDishNames()) {
 			String quantity = req.getParameter(dishName);
-			if (quantity != null) {
+			if (quantity != null && !quantity.equals("")) {
 				try {
 					int quantityInt = Integer.parseInt(quantity);
 					order.addToOrder(dishName, quantityInt);
@@ -27,6 +28,10 @@ public class OrderReceivedServlet extends HttpServlet {
 				}
 			}
 		}
-		resp.sendRedirect("/thankYou.html?totalPrice=" + order.calculateOrderPrice());
+
+		HttpSession session = req.getSession();
+		session.setAttribute("totalPrice", order.calculateOrderPrice());
+
+		resp.sendRedirect("/thankYou.html");
 	}
 }

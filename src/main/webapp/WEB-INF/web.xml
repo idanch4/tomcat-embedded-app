@@ -48,4 +48,8 @@
         <servlet-name>ThankYouServlet</servlet-name>
         <url-pattern>/thankYou.html</url-pattern>
     </servlet-mapping>
+
+    <session-config>
+        <session-timeout>120</session-timeout>
+    </session-config>
 </web-app>

@@ -10,9 +10,8 @@ import java.io.PrintWriter;
 public class ThankYouServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String totalPrice = req.getParameter("totalPrice");
+        Double totalPrice = (Double) req.getSession().getAttribute("totalPrice");
         if (totalPrice != null) {
-
             PrintWriter out = resp.getWriter();
             resp.setContentType("text/html");
             out.println("<html><body><h1>Ricky's Restaurant</h1>");
