@@ -1,7 +1,7 @@
 package com.idanch.servlets;
 
 import com.idanch.data.IdansRestaurant;
-import com.idanch.data.RestaurantOrder;
+import com.idanch.representations.RestaurantOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

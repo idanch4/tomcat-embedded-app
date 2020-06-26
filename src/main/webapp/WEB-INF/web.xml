@@ -29,10 +29,6 @@
         <servlet-class>com.idanch.servlets.ThankYouServlet</servlet-class>
     </servlet>
 
-    <servlet-mapping>
-        <servlet-name>QueryDishesServlet</servlet-name>
-        <url-pattern>/</url-pattern>
-    </servlet-mapping>
 
     <servlet-mapping>
         <servlet-name>ListMenuServlet</servlet-name>
@@ -47,6 +43,11 @@
     <servlet-mapping>
         <servlet-name>ThankYouServlet</servlet-name>
         <url-pattern>/thankYou.html</url-pattern>
+    </servlet-mapping>
+
+    <servlet-mapping>
+        <servlet-name>QueryDishesServlet</servlet-name>
+        <url-pattern>   </url-pattern>
     </servlet-mapping>
 
     <!-- role tags are redundant in tomcat, added for complicity -->
@@ -70,7 +71,11 @@
     </security-constraint>
 
     <login-config>
-        <auth-method>BASIC</auth-method>
+        <auth-method>FORM</auth-method>
+        <form-login-config>
+            <form-login-page>/login.html</form-login-page>
+            <form-error-page>/failed-login.html</form-error-page>
+        </form-login-config>
     </login-config>
 
     <session-config>

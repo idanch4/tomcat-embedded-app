@@ -16,6 +16,7 @@
  */
 package com.idanch;
 
+import com.idanch.data.DbBootstrap;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.WebResourceRoot;
 import org.apache.catalina.WebResourceSet;
@@ -29,6 +30,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import java.io.File;
+import java.sql.SQLException;
 
 /**
  * An Example Embedded Apache Tomcat with an anonymous inner class
@@ -53,7 +55,7 @@ public class Main {
     public static final Logger log = LoggerFactory.getLogger(Main.class);
 
     public static void main(String[] args)
-            throws LifecycleException {
+            throws LifecycleException, SQLException {
 
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(8082);
@@ -74,6 +76,9 @@ public class Main {
         tomcat.addUser("idan", "1234");
         tomcat.addRole("idan", "user");
         tomcat.addRole("idan", "admin");
+
+        // H2 Db Bootstrap
+        DbBootstrap.initialize();
 
         tomcat.start();
         tomcat.getServer().await();

@@ -1,14 +1,30 @@
-package com.idanch.data;
+package com.idanch.representations;
+
+import java.util.UUID;
 
 public class Dish {
+    private long id;
     private String name;
-    private double priceShekels;
     private String description;
+    private String category;
+    private double priceShekels;
 
-    public Dish(String name, String description, int priceShekels) {
-        setName(name);
+    public Dish() {}
+
+    public Dish(long id, String name, String description, String category, int priceShekels) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
         this.description = description;
         this.priceShekels = priceShekels;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -16,7 +32,7 @@ public class Dish {
     }
 
     public void setName(String name) {
-        this.name = name.toLowerCase();
+        this.name = name;
     }
 
     public String getDescription() {
@@ -25,6 +41,14 @@ public class Dish {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 
     public double getPriceShekels() {
@@ -42,19 +66,21 @@ public class Dish {
 
         Dish dish = (Dish) o;
 
-        return name.equals(dish.name);
+        return id == dish.id;
     }
 
     @Override
     public int hashCode() {
-        return 31 * name.hashCode();
+        return 31 * (int) id;
     }
 
     @Override
     public String toString() {
         return "Dish{" +
+                "id='" + id + '\'' +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
+                ", category='" + category + '\'' +
                 ", priceShekels='" + priceShekels + '\'' +
                 '}';
     }

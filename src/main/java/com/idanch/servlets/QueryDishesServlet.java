@@ -1,6 +1,6 @@
 package com.idanch.servlets;
 
-import com.idanch.data.Dish;
+import com.idanch.representations.Dish;
 import com.idanch.data.IdansRestaurant;
 
 import javax.servlet.http.HttpServlet;

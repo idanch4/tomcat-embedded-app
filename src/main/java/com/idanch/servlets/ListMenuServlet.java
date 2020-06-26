@@ -1,9 +1,9 @@
 package com.idanch.servlets;
 
-import com.idanch.data.Dish;
-import com.idanch.data.IdansRestaurant;
+import com.idanch.data.factories.MenuDaoFactory;
+import com.idanch.data.interfaces.MenuDao;
+import com.idanch.representations.Dish;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -13,13 +13,14 @@ import java.util.List;
 
 public class ListMenuServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         PrintWriter out = resp.getWriter();
         resp.setContentType("text/html");
 
         out.println("<head><title>Idan's Restaurant - Menu</title></head>");
 
-        List<Dish> menu = IdansRestaurant.getMenu().getAllDishes();
+        MenuDao menuDao = MenuDaoFactory.getMenuDao();
+        List<Dish> menu = menuDao.getAllDishes();
 
         out.println("<html><body>");
         out.println("<h1>Welcome to Idan's Restaurant</h1>");

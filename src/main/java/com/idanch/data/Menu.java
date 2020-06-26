@@ -1,10 +1,12 @@
 package com.idanch.data;
 
+import com.idanch.representations.Dish;
+
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class Menu {
-    private Map<String,Dish> menu = new HashMap<>();
+    private Map<String, Dish> menu = new HashMap<>();
 
     public boolean add(Dish dish) {
         if (!menu.containsKey(dish.getName())) {

@@ -1,4 +1,6 @@
-package com.idanch.data;
+package com.idanch.representations;
+
+import com.idanch.data.Menu;
 
 import java.util.HashMap;
 import java.util.Map;
