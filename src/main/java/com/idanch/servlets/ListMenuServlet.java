@@ -30,7 +30,7 @@ public class ListMenuServlet extends HttpServlet {
 
         for (Dish dish: menu) {
             out.println("<li>" + dish.getName() + ": " + dish.getPriceShekels() +
-                    " <input type='text' name='" + dish.getName() + "'/>");
+                    " <input type='text' name='" + dish.getName() + " (" + dish.getPriceShekels() + " nis)'/>");
         }
 
         out.println("</ul>");

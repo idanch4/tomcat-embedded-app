@@ -1,5 +1,7 @@
 package com.idanch.servlets;
 
+import com.idanch.data.factories.MenuDaoFactory;
+import com.idanch.data.interfaces.MenuDao;
 import com.idanch.representations.Dish;
 import com.idanch.data.IdansRestaurant;
 
@@ -20,7 +22,9 @@ public class QueryDishesServlet extends HttpServlet {
             query = "";
         }
 
-        List<Dish> queryResult = IdansRestaurant.getMenu().findDishesByName(query);
+        MenuDao menuDao = MenuDaoFactory.getMenuDao();
+        List<Dish> queryResult = menuDao.findDishes(query);
+                //IdansRestaurant.getMenu().findDishesByName(query);
         Writer writer = resp.getWriter();
 
         if (queryResult.size() == 0) {
@@ -28,14 +32,14 @@ public class QueryDishesServlet extends HttpServlet {
             return;
         }
 
-        writer.write("<p>Search Results:</p>");
+        writer.write("<p>Menu:</p>");
         for (Dish dish: queryResult) {
-            writer.write("<p>");
-            writer.write(dish.getName());
+            writer.write("<h3>");
+            writer.write(dish.getName() + " (" + dish.getPriceShekels() +" nis)");
             if (dish.getDescription() != null && !dish.getDescription().equals("")) {
                 writer.write(": " + dish.getDescription());
             }
-            writer.write("</p>");
+            writer.write("</h3>");
         }
         writer.flush();
     }

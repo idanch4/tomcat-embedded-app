@@ -47,7 +47,7 @@
 
     <servlet-mapping>
         <servlet-name>QueryDishesServlet</servlet-name>
-        <url-pattern>   </url-pattern>
+        <url-pattern></url-pattern>
     </servlet-mapping>
 
     <!-- role tags are redundant in tomcat, added for complicity -->
