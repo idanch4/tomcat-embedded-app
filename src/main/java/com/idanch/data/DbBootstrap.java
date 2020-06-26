@@ -48,7 +48,7 @@ public class DbBootstrap {
 
             try (PreparedStatement stm = connection.prepareStatement(
                     "CREATE TABLE orders " +
-                            "(id LONG PRIMARY KEY, customer VARCHAR(50) NOT NULL,contents VARCHAR(250),status VARCHAR(40));")) {
+                            "(id LONG PRIMARY KEY auto_increment, customer VARCHAR(50) NOT NULL,contents VARCHAR(250),status VARCHAR(40));")) {
                 stm.execute();
             }
 

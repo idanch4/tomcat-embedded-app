@@ -1,42 +1,52 @@
 package com.idanch.representations;
 
-import com.idanch.data.Menu;
-
 import java.util.HashMap;
 import java.util.Map;
 
 public class RestaurantOrder {
-    private Map<String, Integer> order;
-    private Menu menu;
+    private long id;
+    private Map<Long,Integer> contents;
+    private String customer;
+    private String status;
 
-    public RestaurantOrder(Menu menu) {
-        this.menu = menu;
-        this.order = new HashMap<>();
-    }
-    public int addToOrder(String dishName, int quantity) {
-
-        if (!menu.isOnMenu(dishName)) {
-            return 0;
+    public void addToOrder(long dishId, int quantity) {
+        if (contents.containsKey(dishId)) {
+            int newQuantity = contents.get(dishId) + quantity;
+            contents.replace(dishId, newQuantity);
+        } else {
+            contents.put(dishId, quantity);
         }
-
-        if (order.containsKey(dishName)) {
-            int newQuantity = order.get(dishName) + quantity;
-            order.replace(dishName, newQuantity);
-            return newQuantity;
-        }
-
-        order.put(dishName, quantity);
-        return quantity;
     }
 
-    public double calculateOrderPrice() {
-        double totalPrice = 0;
-        for (String dishName: order.keySet()) {
-            Dish dishFromMenu = menu.getDish(dishName);
-            if (dishFromMenu != null) {
-                totalPrice += (dishFromMenu.getPriceShekels() * order.get(dishName));
-            }
-        }
-        return totalPrice;
+    public RestaurantOrder() {
+        this.contents = new HashMap<>();
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public Map<Long, Integer> getContents() {
+        return new HashMap<>(contents);
+    }
+
+    public String getCustomer() {
+        return customer;
+    }
+
+    public void setCustomer(String customer) {
+        this.customer = customer;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

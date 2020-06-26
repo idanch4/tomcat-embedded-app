@@ -10,6 +10,6 @@ public class OrdersDaoFactory {
         if (ordersDao != null) {
             return ordersDao;
         }
-        return new OrdersDaoImpl();
+        return new OrdersDaoImpl(MenuDaoFactory.getMenuDao());
     }
 }
