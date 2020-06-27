@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.Arrays;
 import java.util.Map;
 
 public class OrdersDaoImpl implements OrdersDao {
@@ -25,29 +26,30 @@ public class OrdersDaoImpl implements OrdersDao {
                 JdbcConfig.H2_CONNECTION_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD);
-             PreparedStatement stm = connection.prepareStatement("INSERT INTO orders (customer, status) VALUES (?,?);"))
+             PreparedStatement stm = connection.prepareStatement(
+                     "INSERT INTO orders (customer,status) VALUES (?,?);",
+                     Statement.RETURN_GENERATED_KEYS))
         {
             stm.setString(1, customer);
             stm.setString(2, "PENDING");
-            if(stm.execute()) {
-                ResultSet resultSet = stm.getGeneratedKeys();
-                if (resultSet.next()) {
-                    return resultSet.getLong("id");
-                }
+            stm.execute();
+
+            ResultSet resultSet = stm.getGeneratedKeys();
+            if (resultSet.next()) {
+                return resultSet.getLong("id");
             }
-            return null;
         }catch (SQLException sqlException) {
-            log.error(sqlException.getSQLState());
-            return null;
+            log.error(sqlException.getMessage());
         }
+        return null;
     }
 
     @Override
-    public void addToOrder(Long orderId, Dish dish, Integer quantity) {
+    public void addToOrder(long orderId, long dishId, int quantity) {
 
-        Dish dishToAdd = menuDao.getDish(dish.getId());
+        Dish dishToAdd = menuDao.getDish(dishId);
         if (dishToAdd == null) {
-            log.error("Dish is not on the menu - could not add to order (" + dish + ")");
+            log.error("Dish is not on the menu - could not add to order (dish_id: " + dishId + ")");
             return;
         }
         try (Connection connection = DriverManager.getConnection(
@@ -55,7 +57,7 @@ public class OrdersDaoImpl implements OrdersDao {
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD);)
         {
-            String contentsStrUpdated = null;
+            String contentsStrUpdated;
             try (PreparedStatement stm = connection.prepareStatement("SELECT * FROM orders WHERE id=?;"))
             {
                 log.info("Executing SQL SELECT Statement on Table orders");
@@ -70,19 +72,59 @@ public class OrdersDaoImpl implements OrdersDao {
                 String contentsStr = resultSet.getString("contents");
                 strToContents(contentsStr, order);
 
-                order.addToOrder(dish.getId(), quantity);
+                order.addToOrder(dishId, quantity);
                 contentsStrUpdated = contentsToStr(order);
             }
 
-            try (PreparedStatement stm = connection.prepareStatement("UPDATE orders SET (contents=?) WHERE id=?;")) {
+            try (PreparedStatement stm = connection.prepareStatement("UPDATE orders SET contents=? WHERE id=?")) {
                 stm.setString(1, contentsStrUpdated);
                 stm.setLong(2, orderId);
                 stm.execute();
                 log.info("Executed SQL UPDATE Statement on TABLE orders");
             }
         }catch (SQLException sqlException) {
-            log.error(sqlException.getSQLState());
+            log.error(sqlException.getMessage());
         }
+    }
+
+    @Override
+    public Double calculateTotal(long orderId) {
+        try (Connection connection = DriverManager.getConnection(
+                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.DB_USERNAME,
+                JdbcConfig.DB_PASSWORD);
+            PreparedStatement stm = connection.prepareStatement("SELECT contents FROM orders WHERE id=?;"))
+        {
+            stm.setLong(1, orderId);
+            stm.execute();
+            ResultSet resultSet = stm.getResultSet();
+            if (resultSet.next()) {
+                String contentsStr = resultSet.getString("contents");
+                RestaurantOrder order = new RestaurantOrder();
+                strToContents(contentsStr, order);
+
+                Map<Long,Integer> contents = order.getContents();
+                double total = 0.0;
+
+                // calculate the total price
+                for (long dishId: contents.keySet()) {
+                    try (PreparedStatement stm1 = connection.prepareStatement("SELECT priceShekels FROM menu WHERE id=?")) {
+                        stm1.setLong(1, dishId);
+                        stm1.execute();
+                        resultSet = stm1.getResultSet();
+                        if (resultSet.next()) {
+                            float price = resultSet.getFloat("priceShekels");
+                            total += (price * contents.get(dishId));
+                        }
+                    }
+                }
+                return total;
+            }
+
+        }catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
+        }
+        return null;
     }
 
     private String contentsToStr(RestaurantOrder order) {
@@ -98,10 +140,14 @@ public class OrdersDaoImpl implements OrdersDao {
     }
 
     public void strToContents(String contentsStr, RestaurantOrder order) {
+        if (contentsStr == null || contentsStr.equals("")) {
+            return;
+        }
+
         String[] orderItems = contentsStr.split(",");
         try{
             //last array item is empty (splitted string ends with ',')
-            for (int i = 0; i< orderItems.length - 1; i++) {
+            for (int i = 0; i< orderItems.length; i++) {
                 String[] orderPair = orderItems[i].split(":");
                 long dishId = Long.parseLong(orderPair[0]);
                 int quantity = Integer.parseInt(orderPair[1]);

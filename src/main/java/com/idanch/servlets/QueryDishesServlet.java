@@ -3,7 +3,6 @@ package com.idanch.servlets;
 import com.idanch.data.factories.MenuDaoFactory;
 import com.idanch.data.interfaces.MenuDao;
 import com.idanch.representations.Dish;
-import com.idanch.data.IdansRestaurant;
 
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;

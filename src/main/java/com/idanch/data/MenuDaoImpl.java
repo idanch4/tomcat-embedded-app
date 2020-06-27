@@ -19,6 +19,7 @@ public class MenuDaoImpl implements MenuDao {
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD)) {
             try (PreparedStatement stm = connection.prepareStatement("SELECT * FROM menu WHERE id=?;")) {
+                stm.setLong(1, id);
                 stm.execute();
                 log.info("Executed SQL SELECT Statement on Table menu");
                 ResultSet resultSet = stm.getResultSet();
@@ -68,7 +69,7 @@ public class MenuDaoImpl implements MenuDao {
                 return dishes;
             }
         }catch (SQLException sqlException) {
-            log.error(sqlException.getSQLState());
+            log.error(sqlException.getMessage());
             return new ArrayList<>();
         }
     }
@@ -101,7 +102,7 @@ public class MenuDaoImpl implements MenuDao {
                 return dishes;
             }
         }catch (SQLException sqlException) {
-            log.error(sqlException.getSQLState());
+            log.error(sqlException.getMessage());
             return new ArrayList<>();
         }
     }
