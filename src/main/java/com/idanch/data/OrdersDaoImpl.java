@@ -8,7 +8,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
-import java.util.Arrays;
 import java.util.Map;
 
 public class OrdersDaoImpl implements OrdersDao {
@@ -55,7 +54,7 @@ public class OrdersDaoImpl implements OrdersDao {
         try (Connection connection = DriverManager.getConnection(
                 JdbcConfig.H2_CONNECTION_URL,
                 JdbcConfig.DB_USERNAME,
-                JdbcConfig.DB_PASSWORD);)
+                JdbcConfig.DB_PASSWORD))
         {
             String contentsStrUpdated;
             try (PreparedStatement stm = connection.prepareStatement("SELECT * FROM orders WHERE id=?;"))
@@ -147,8 +146,8 @@ public class OrdersDaoImpl implements OrdersDao {
         String[] orderItems = contentsStr.split(",");
         try{
             //last array item is empty (splitted string ends with ',')
-            for (int i = 0; i< orderItems.length; i++) {
-                String[] orderPair = orderItems[i].split(":");
+            for (String orderItem : orderItems) {
+                String[] orderPair = orderItem.split(":");
                 long dishId = Long.parseLong(orderPair[0]);
                 int quantity = Integer.parseInt(orderPair[1]);
                 order.addToOrder(dishId, quantity);

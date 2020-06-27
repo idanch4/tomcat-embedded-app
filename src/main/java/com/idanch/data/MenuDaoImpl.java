@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MenuDaoImpl implements MenuDao {
-    Logger log = LoggerFactory.getLogger(MenuDao.class);
+    public static final Logger log = LoggerFactory.getLogger(MenuDao.class);
 
     @Override
     public Dish getDish(Long id) {

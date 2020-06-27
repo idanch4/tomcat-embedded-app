@@ -1,7 +1,5 @@
 package com.idanch.representations;
 
-import java.util.UUID;
-
 public class Dish {
     private long id;
     private String name;

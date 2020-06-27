@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class DbBootstrap {
     public static final Logger log = LoggerFactory.getLogger(DbBootstrap.class);
 
-    private static Menu menu = new Menu();
+    private static final Menu menu = new Menu();
     static {
         menu.add(new Dish(11,"italian pizza", "classic, timeless, perfect.", "pizza", 60));
         menu.add(new Dish(21,"american pizza", "paparoni, cheese, dough.", "pizza", 30));
@@ -29,10 +29,10 @@ public class DbBootstrap {
         try (Connection connection = DriverManager.getConnection(
                 JdbcConfig.H2_CONNECTION_URL,
                 JdbcConfig.DB_USERNAME,
-                JdbcConfig.DB_PASSWORD);
-            )
+                JdbcConfig.DB_PASSWORD)
+        )
         {
-            try (PreparedStatement stm = connection.prepareStatement("DROP TABLE IF EXISTS menu;");) {
+            try (PreparedStatement stm = connection.prepareStatement("DROP TABLE IF EXISTS menu;")) {
                 stm.execute();
             }
 
@@ -68,9 +68,5 @@ public class DbBootstrap {
         }catch(SQLException sqlException) {
             throw new SQLException(sqlException);
         }
-    }
-
-    public static Menu getMenu() {
-        return menu;
     }
 }

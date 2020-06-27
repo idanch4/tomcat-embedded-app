@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class RestaurantOrder {
     private long id;
-    private Map<Long,Integer> contents;
+    private final Map<Long,Integer> contents;
     private String customer;
     private String status;
 
