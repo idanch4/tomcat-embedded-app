@@ -4,6 +4,7 @@ import com.idanch.data.factories.MenuDaoFactory;
 import com.idanch.data.interfaces.MenuDao;
 import com.idanch.representations.Dish;
 
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -11,6 +12,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
+@WebServlet("")
 public class QueryDishesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
@@ -40,6 +42,12 @@ public class QueryDishesServlet extends HttpServlet {
             }
             writer.write("</h3>");
         }
+        if (req.getUserPrincipal() == null || req.getUserPrincipal().getName().equals("")) {
+            writer.write("<h2>Please <a href='/listMenu.html'>login</a> to order.</h2>");
+        } else {
+            writer.write("<h2><a href='/logout.html'>Logout</a></h2>");
+        }
+
         writer.flush();
     }
 }

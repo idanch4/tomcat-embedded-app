@@ -9,47 +9,6 @@
         The menu and online ordering system for Idan's Restaurant
     </description>
 
-    <servlet>
-        <servlet-name>QueryDishesServlet</servlet-name>
-        <servlet-class>com.idanch.servlets.QueryDishesServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>ListMenuServlet</servlet-name>
-        <servlet-class>com.idanch.servlets.ListMenuServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>OrderReceivedServlet</servlet-name>
-        <servlet-class>com.idanch.servlets.OrderReceivedServlet</servlet-class>
-    </servlet>
-
-    <servlet>
-        <servlet-name>ThankYouServlet</servlet-name>
-        <servlet-class>com.idanch.servlets.ThankYouServlet</servlet-class>
-    </servlet>
-
-
-    <servlet-mapping>
-        <servlet-name>ListMenuServlet</servlet-name>
-        <url-pattern>/listMenu.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>OrderReceivedServlet</servlet-name>
-        <url-pattern>/orderReceived.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>ThankYouServlet</servlet-name>
-        <url-pattern>/thankYou.html</url-pattern>
-    </servlet-mapping>
-
-    <servlet-mapping>
-        <servlet-name>QueryDishesServlet</servlet-name>
-        <url-pattern></url-pattern>
-    </servlet-mapping>
-
     <!-- role tags are redundant in tomcat, added for complicity -->
     <security-role>
         <role-name>user</role-name>
@@ -57,18 +16,6 @@
     <security-role>
         <role-name>admin</role-name>
     </security-role>
-
-    <security-constraint>
-        <web-resource-collection>
-            <web-resource-name>user pages</web-resource-name>
-            <url-pattern>/listMenu.html</url-pattern>
-            <url-pattern>/orderReceived.html</url-pattern>
-            <url-pattern>/thankYou.html</url-pattern>
-        </web-resource-collection>
-        <auth-constraint>
-            <role-name>user</role-name>
-        </auth-constraint>
-    </security-constraint>
 
     <login-config>
         <auth-method>FORM</auth-method>
