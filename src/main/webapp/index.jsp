@@ -6,12 +6,10 @@
 <html>
     <head>
         <title>Home Page</title>
-
-        <link rel="stylesheet" type="text/css" href="/styles.css" />
     </head>
     <body>
         <!-- header template -->
-        <jsp:include page="/header.jsp" />
+        <jsp:include page="/jsp/header.jsp" />
 
         <%
            MenuDao menuDao = MenuDaoFactory.getMenuDao();
@@ -25,9 +23,9 @@
                 <li><%=dish%></li>
                 <% } %>
         </ul>
-        <a href="/listMenu.html">Place an Order</a>
+        <a href="/listMenu">Place an Order</a>
 
         <! -- footer -->
-        <jsp:include page="/footer.jsp" />
+        <jsp:include page="/jsp/footer.jsp" />
     <body>
 </html>

@@ -5,6 +5,9 @@ import com.idanch.data.interfaces.OrdersDao;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
@@ -22,16 +25,16 @@ public class OrderReceivedServlet extends HttpServlet {
 
 	public static final Logger log = LoggerFactory.getLogger(OrderReceivedServlet.class);
 
-	public void doPost (HttpServletRequest req, HttpServletResponse resp) throws IOException {
+	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		OrdersDao ordersDao = OrdersDaoFactory.getOrdersDao();
-		String customer = req.getUserPrincipal().getName();
+		String customer = request.getUserPrincipal().getName();
 		Long orderId = ordersDao.newOrder(customer);
 		if (orderId == null) {
 			log.error("Could not get ${order_id}");
 			return;
 		}
 
-		Map<String, String[]> params = req.getParameterMap();
+		Map<String, String[]> params = request.getParameterMap();
 		for (Map.Entry<String,String[]> entry: params.entrySet()) {
 			if (entry.getKey().startsWith("dish_")) {
 				if (entry.getValue().length > 0) {
@@ -50,10 +53,14 @@ public class OrderReceivedServlet extends HttpServlet {
 			}
 		}
 
-		HttpSession session = req.getSession();
+		HttpSession session = request.getSession();
 		double total = ordersDao.calculateTotal(orderId);
 		session.setAttribute("totalPrice", total);
 
-		resp.sendRedirect("/thankYou.html");
+		request.setAttribute("totalPrice", total);
+
+		ServletContext context = getServletContext();
+		RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/thankYou.jsp");
+		dispatcher.forward(request, response);
 	}
 }

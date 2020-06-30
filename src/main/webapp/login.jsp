@@ -5,6 +5,8 @@
     <title>Login Page</title>
 </head>
 <body>
+    <jsp:include page="/jsp/header.jsp"/>
+
     <h1>Login</h1>
     <form action="j_security_check" method="post">
         <table>
@@ -21,5 +23,7 @@
             </tr>
         </table>
     </form>
+
+    <jsp:include page="/jsp/footer.jsp"/>
 </body>
 </html>

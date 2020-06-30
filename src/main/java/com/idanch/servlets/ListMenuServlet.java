@@ -4,6 +4,9 @@ import com.idanch.data.factories.MenuDaoFactory;
 import com.idanch.data.interfaces.MenuDao;
 import com.idanch.data.representations.Dish;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
@@ -14,34 +17,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-@WebServlet("/listMenu.html")
+@WebServlet("/listMenu")
 @ServletSecurity(@HttpConstraint(rolesAllowed = {"user", "admin"}))
 public class ListMenuServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        PrintWriter out = resp.getWriter();
-        resp.setContentType("text/html");
-
-        out.println("<head><title>Idan's Restaurant - Menu</title></head>");
-
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         MenuDao menuDao = MenuDaoFactory.getMenuDao();
         List<Dish> menu = menuDao.getAllDishes();
 
-        out.println("<html><body>");
-        out.println("<h1>Welcome to Idan's Restaurant</h1>");
-        out.println("<h2>please choose an order from the menu:</h2>");
-        out.println("<form action='/orderReceived.html' method='post'>");
-        out.println("<ul>");
+        request.setAttribute("menu", menu);
 
-        for (Dish dish: menu) {
-            out.println("<li>" + dish.getName() + ": " + dish.getPriceShekels() + " (nis)" +
-                    " <input type='text' name='dish_" + dish.getId() + "'/>");
-        }
-
-        out.println("</ul>");
-
-        out.println("<input type='submit' value='Place Order'/>");
-        out.println("</form>");
-        out.println("</body></html>");
+        ServletContext context = getServletContext();
+        RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/listMenu.jsp");
+        dispatcher.forward(request, response);
     }
 }

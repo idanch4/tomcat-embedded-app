@@ -14,14 +14,15 @@ h2 {
 }
 
 .logo {
-	height: 200px;
-	background-image: url("top-image.jpg");
-	background-position: left center;
+	height: 400px;
+	background-image: url("../../resources/top-image.jpg");
+	background-position: center;
 	text-align: center;
+	line-height:400px;
 }
 
 .logo h1 {
-	padding-top: 70px;
+
 	color: #FFFFFF;
 }
 

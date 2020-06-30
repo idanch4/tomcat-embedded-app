@@ -1,5 +1,8 @@
 package com.idanch.servlets;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;
 import javax.servlet.annotation.WebServlet;
@@ -7,27 +10,17 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
 
-@WebServlet("/thankYou.html")
+@WebServlet("/thankYou")
 @ServletSecurity(@HttpConstraint(rolesAllowed = {"user", "admin"}))
 public class ThankYouServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Double totalPrice = (Double) req.getSession().getAttribute("totalPrice");
-        if (totalPrice != null) {
-            PrintWriter out = resp.getWriter();
-            resp.setContentType("text/html; charset=utf-8");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+        Float totalPrice = (Float) request.getSession().getAttribute("totalPrice");
+        request.setAttribute("totalPrice", totalPrice);
 
-            out.println("<html><body><h1>Ricky's Restaurant</h1>");
-            out.println("<h2>Order your food</h2>");
-
-            out.println("Thank you - your order has been received. You need to pay " + totalPrice + " SS\u20AA");
-
-            out.println("</body></html>");
-            out.close();
-        } else {
-            resp.setStatus(403);
-        }
+        ServletContext context = getServletContext();
+        RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/thankYou.jsp");
+        dispatcher.forward(request, response);
     }
 }
