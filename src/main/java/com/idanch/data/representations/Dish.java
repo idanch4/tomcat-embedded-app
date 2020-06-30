@@ -74,12 +74,7 @@ public class Dish {
 
     @Override
     public String toString() {
-        return "Dish{" +
-                "id='" + id + '\'' +
-                "name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", category='" + category + '\'' +
-                ", priceShekels='" + priceShekels + '\'' +
-                '}';
+        return String.format("%s (%.2f NIS): %s", name, priceShekels,
+                description == null ? "" : description);
     }
 }

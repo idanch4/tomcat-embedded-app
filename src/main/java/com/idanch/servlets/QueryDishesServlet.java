@@ -12,7 +12,7 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
 
-@WebServlet("")
+@WebServlet("/queryDishes")
 public class QueryDishesServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
