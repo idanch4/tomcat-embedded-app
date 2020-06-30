@@ -1,6 +1,6 @@
 package com.idanch.data.interfaces;
 
-import com.idanch.representations.Dish;
+import com.idanch.data.representations.Dish;
 
 import java.util.List;
 

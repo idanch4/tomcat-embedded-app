@@ -2,7 +2,7 @@ package com.idanch.servlets;
 
 import com.idanch.data.factories.MenuDaoFactory;
 import com.idanch.data.interfaces.MenuDao;
-import com.idanch.representations.Dish;
+import com.idanch.data.representations.Dish;
 
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;

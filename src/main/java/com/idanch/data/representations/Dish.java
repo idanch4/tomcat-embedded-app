@@ -1,4 +1,4 @@
-package com.idanch.representations;
+package com.idanch.data.representations;
 
 public class Dish {
     private long id;

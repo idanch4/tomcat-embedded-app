@@ -2,7 +2,7 @@ package com.idanch.servlets;
 
 import com.idanch.data.factories.MenuDaoFactory;
 import com.idanch.data.interfaces.MenuDao;
-import com.idanch.representations.Dish;
+import com.idanch.data.representations.Dish;
 
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -25,7 +25,6 @@ public class QueryDishesServlet extends HttpServlet {
 
         MenuDao menuDao = MenuDaoFactory.getMenuDao();
         List<Dish> queryResult = menuDao.findDishes(query);
-                //IdansRestaurant.getMenu().findDishesByName(query);
         Writer writer = resp.getWriter();
 
         if (queryResult.size() == 0) {

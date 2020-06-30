@@ -1,6 +1,6 @@
 package com.idanch.data;
 
-import com.idanch.representations.Dish;
+import com.idanch.data.representations.Dish;
 
 import java.util.ArrayList;
 import java.util.HashMap;
