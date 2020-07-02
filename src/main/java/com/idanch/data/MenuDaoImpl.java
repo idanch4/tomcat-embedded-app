@@ -15,7 +15,7 @@ public class MenuDaoImpl implements MenuDao {
     @Override
     public Dish getDish(Long id) {
         try (Connection connection = DriverManager.getConnection(
-                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD)) {
             try (PreparedStatement stm = connection.prepareStatement("SELECT * FROM menu WHERE id=?;")) {
@@ -46,7 +46,7 @@ public class MenuDaoImpl implements MenuDao {
     @Override
     public List<Dish> getAllDishes() {
         try (Connection connection = DriverManager.getConnection(
-                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD)) {
             try (PreparedStatement stm = connection.prepareStatement("SELECT * FROM menu;")) {
@@ -77,7 +77,7 @@ public class MenuDaoImpl implements MenuDao {
     @Override
     public List<Dish> findDishes(String searchQuery) {
         try (Connection connection = DriverManager.getConnection(
-                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD)) {
             try (PreparedStatement stm = connection.prepareStatement("SELECT * FROM menu WHERE name LIKE ? OR description LIKE ?")) {

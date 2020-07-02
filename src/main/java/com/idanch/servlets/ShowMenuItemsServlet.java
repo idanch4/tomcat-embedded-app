@@ -14,18 +14,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet("/searchResults")
-public class QueryDishesServlet extends HttpServlet {
+@WebServlet("")
+public class ShowMenuItemsServlet extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        String searchQuery = request.getParameter("searchQuery");
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         MenuDao menuDao = MenuDaoFactory.getMenuDao();
-        List<Dish> menu = menuDao.findDishes(searchQuery);
+        List<Dish> menu = menuDao.getAllDishes();
 
         request.setAttribute("menu", menu);
 
         ServletContext context = getServletContext();
-        RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/searchResults.jsp");
+        RequestDispatcher dispatcher = context.getRequestDispatcher("/index.jsp");
         dispatcher.forward(request, response);
     }
 }

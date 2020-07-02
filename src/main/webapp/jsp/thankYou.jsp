@@ -1,3 +1,5 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <html>
     <head>
         <title>Thank You!</title>
@@ -5,11 +7,7 @@
     <body>
         <jsp:include page="/jsp/header.jsp" />
 
-        <% Double totalPrice = (Double) request.getAttribute("totalPrice");
-         if (totalPrice != null) { %>
-            <p>Thank you - your order has been received. You need to pay
-            <%=totalPrice%> Shekels</p>
-        <% } %>
+        <p>Thank you - your order has been received. You need to pay ${totalPrice} NIS</p>
 
         <jsp:include page="/jsp/footer.jsp" />
     </body>

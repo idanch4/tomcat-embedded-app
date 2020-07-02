@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class OrdersDaoImpl implements OrdersDao {
@@ -22,7 +24,7 @@ public class OrdersDaoImpl implements OrdersDao {
     @Override
     public Long newOrder(String customer) {
         try (Connection connection = DriverManager.getConnection(
-                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD);
              PreparedStatement stm = connection.prepareStatement(
@@ -30,7 +32,7 @@ public class OrdersDaoImpl implements OrdersDao {
                      Statement.RETURN_GENERATED_KEYS))
         {
             stm.setString(1, customer);
-            stm.setString(2, "PENDING");
+            stm.setString(2, RestaurantOrder.OrderStatus.PENDING.name());
             stm.execute();
 
             ResultSet resultSet = stm.getGeneratedKeys();
@@ -52,7 +54,7 @@ public class OrdersDaoImpl implements OrdersDao {
             return;
         }
         try (Connection connection = DriverManager.getConnection(
-                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD))
         {
@@ -89,7 +91,7 @@ public class OrdersDaoImpl implements OrdersDao {
     @Override
     public Double calculateTotal(long orderId) {
         try (Connection connection = DriverManager.getConnection(
-                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD);
             PreparedStatement stm = connection.prepareStatement("SELECT contents FROM orders WHERE id=?;"))
@@ -124,6 +126,60 @@ public class OrdersDaoImpl implements OrdersDao {
             log.error(sqlException.getMessage());
         }
         return null;
+    }
+
+    @Override
+    public List<RestaurantOrder> getAllOrders() {
+        try (Connection connection = DriverManager.getConnection(
+                JdbcConfig.H2_URL,
+                JdbcConfig.DB_USERNAME,
+                JdbcConfig.DB_PASSWORD);
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM orders;")) {
+
+            stm.execute();
+            ResultSet resultSet = stm.getResultSet();
+            List<RestaurantOrder> orders = new ArrayList<>();
+            RestaurantOrder order;
+            while (resultSet.next()) {
+                order = new RestaurantOrder();
+                long id = resultSet.getLong("id");
+                String customer = resultSet.getString("customer");
+                String contentsStr = resultSet.getString("contents");
+                RestaurantOrder.OrderStatus status =
+                        RestaurantOrder.OrderStatus.valueOf(resultSet.getString("status"));
+
+                order.setId(id);
+                order.setCustomer(customer);
+                order.setStatus(status);
+
+                if (contentsStr != null) {
+                    strToContents(contentsStr, order);
+                }
+                orders.add(order);
+            }
+            return orders;
+
+        }catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public void updateRestaurantOrder(long orderId, RestaurantOrder.OrderStatus status) {
+        try (Connection connection = DriverManager.getConnection(
+                JdbcConfig.H2_URL,
+                JdbcConfig.DB_USERNAME,
+                JdbcConfig.DB_PASSWORD);
+            PreparedStatement stm = connection.prepareStatement("UPDATE orders SET status=? WHERE id=?")) {
+
+            stm.setString(1, status.name());
+            stm.setLong(2, orderId);
+            stm.execute();
+
+        }catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
+        }
     }
 
     private String contentsToStr(RestaurantOrder order) {

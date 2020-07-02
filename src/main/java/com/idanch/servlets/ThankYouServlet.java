@@ -16,7 +16,12 @@ import java.io.IOException;
 public class ThankYouServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        Float totalPrice = (Float) request.getSession().getAttribute("totalPrice");
+        Double totalPrice = (Double) request.getSession().getAttribute("totalPrice");
+        if (totalPrice == null) {
+            response.sendRedirect("/listMenu");
+            return;
+        }
+
         request.setAttribute("totalPrice", totalPrice);
 
         ServletContext context = getServletContext();

@@ -1,6 +1,4 @@
-<%@ page import="com.idanch.data.representations.Dish" %>
-<%@ page import="java.util.List" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Idan's Restaurant - Menu</title>
@@ -13,15 +11,9 @@
         <h2>please choose an order from the menu:</h2>
         <form action='/orderReceived.html' method='post'>
             <ul>
-
-            <%
-             List<Dish> menu = (List<Dish>) request.getAttribute("menu");
-             for (Dish dish: menu) { %>
-                <li>
-                        <%=dish%>" <input type='text' name='dish_<%=dish.getId()%>'/>
-                </li>
-            <% } %>
-
+                <c:forEach items="${menu}" var="dish">
+                    <li>${dish} <input type='text' name='dish_${dish.id}'/></li>
+                </c:forEach>
             </ul>
             <input type='submit' value='Place Order'/>
         </form>

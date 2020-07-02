@@ -27,7 +27,7 @@ public class DbBootstrap {
 
     public static void initialize() throws SQLException {
         try (Connection connection = DriverManager.getConnection(
-                JdbcConfig.H2_CONNECTION_URL,
+                JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
                 JdbcConfig.DB_PASSWORD)
         )

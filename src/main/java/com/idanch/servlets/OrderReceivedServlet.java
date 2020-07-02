@@ -57,10 +57,6 @@ public class OrderReceivedServlet extends HttpServlet {
 		double total = ordersDao.calculateTotal(orderId);
 		session.setAttribute("totalPrice", total);
 
-		request.setAttribute("totalPrice", total);
-
-		ServletContext context = getServletContext();
-		RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/thankYou.jsp");
-		dispatcher.forward(request, response);
+		response.sendRedirect("/thankYou");
 	}
 }

@@ -1,8 +1,4 @@
-<%@ page import="com.idanch.data.factories.MenuDaoFactory" %>
-<%@ page import="com.idanch.data.interfaces.MenuDao" %>
-<%@ page import="java.util.List" %>
-<%@ page import="com.idanch.data.representations.Dish" %>
-
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Home Page</title>
@@ -11,17 +7,12 @@
         <!-- header template -->
         <jsp:include page="/jsp/header.jsp" />
 
-        <%
-           MenuDao menuDao = MenuDaoFactory.getMenuDao();
-           List<Dish> queryResult = menuDao.findDishes("");
-        %>
-
         <h1>Welcome to Idan's Restaurant</h1>
         <h2>Menu:</h2>
         <ul>
-            <% for (Dish dish: queryResult) { %>
-                <li><%=dish%></li>
-                <% } %>
+            <c:forEach items="${menu}" var="dish">
+                <li>${dish}</li>
+            </c:forEach>
         </ul>
         <a href="/listMenu">Place an Order</a>
 

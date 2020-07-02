@@ -7,7 +7,7 @@ public class RestaurantOrder {
     private long id;
     private final Map<Long,Integer> contents;
     private String customer;
-    private String status;
+    private OrderStatus status;
 
     public void addToOrder(long dishId, int quantity) {
         if (contents.containsKey(dishId)) {
@@ -16,6 +16,14 @@ public class RestaurantOrder {
         } else {
             contents.put(dishId, quantity);
         }
+    }
+
+    public enum OrderStatus {
+        PENDING,
+        ORDER_ACCEPTED,
+        PAYMENT_RECEIVED,
+        ORDER_PREPARED,
+        READY
     }
 
     public RestaurantOrder() {
@@ -42,11 +50,11 @@ public class RestaurantOrder {
         this.customer = customer;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 }

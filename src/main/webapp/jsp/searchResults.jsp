@@ -1,5 +1,4 @@
-<%@ page import="java.util.List" %>
-<%@ page import="com.idanch.data.representations.Dish" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
     <head>
         <title>Search Results</title>
@@ -9,15 +8,11 @@
 
         <h1>Search Results:</h1>
         <ul>
-            <%
-            List<Dish> dishes = (List<Dish>) request.getAttribute("dishes");
-            for (Dish dish: dishes) {%>
-
-                <li><%=dish%></li>
-            <% }%>
+            <c:forEach items="${menu}" var="dish">
+                <li>${dish}</li>
+            </c:forEach>
         </ul>
 
         <jsp:include page="/jsp/footer.jsp" />
     </body>
-
 </html>
