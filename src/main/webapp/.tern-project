@@ -1,0 +1,9 @@
+{
+  "ecmaVersion": 8,
+  "libs": [
+    "browser"
+  ],
+  "loadEagerly": [
+    "js/*.js"
+  ]
+}

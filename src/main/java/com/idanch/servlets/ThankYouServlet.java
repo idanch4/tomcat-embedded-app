@@ -1,5 +1,11 @@
 package com.idanch.servlets;
 
+import com.idanch.data.factories.MenuDaoFactory;
+import com.idanch.data.factories.OrdersDaoFactory;
+import com.idanch.data.interfaces.MenuDao;
+import com.idanch.data.interfaces.OrdersDao;
+import com.idanch.data.representations.RestaurantOrder;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -16,13 +22,19 @@ import java.io.IOException;
 public class ThankYouServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        Double totalPrice = (Double) request.getSession().getAttribute("totalPrice");
-        if (totalPrice == null) {
+        Long orderId = (Long) request.getSession().getAttribute("orderId");
+        if (orderId == null) {
             response.sendRedirect("/listMenu");
             return;
         }
 
+        OrdersDao ordersDao = OrdersDaoFactory.getOrdersDao();
+        RestaurantOrder.OrderStatus orderStatus = ordersDao.getOrderStatus(orderId);
+        Double totalPrice = ordersDao.calculateTotal(orderId);
+
+        request.setAttribute("status", orderStatus);
         request.setAttribute("totalPrice", totalPrice);
+        request.setAttribute("id", orderId);
 
         ServletContext context = getServletContext();
         RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/thankYou.jsp");

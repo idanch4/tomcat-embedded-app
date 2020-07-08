@@ -77,6 +77,10 @@ public class Main {
         tomcat.addRole("idan", "user");
         tomcat.addRole("idan", "admin");
 
+        tomcat.addUser("test", "1234");
+        tomcat.addRole("test", "user");
+        tomcat.addRole("test", "1234");
+
         // H2 Db Bootstrap
         DbBootstrap.initialize();
 

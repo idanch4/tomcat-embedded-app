@@ -54,9 +54,7 @@ public class OrderReceivedServlet extends HttpServlet {
 		}
 
 		HttpSession session = request.getSession();
-		double total = ordersDao.calculateTotal(orderId);
-		session.setAttribute("totalPrice", total);
-
+		session.setAttribute("orderId", orderId);
 		response.sendRedirect("/thankYou");
 	}
 }

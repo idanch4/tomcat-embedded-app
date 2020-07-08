@@ -7,6 +7,7 @@ import java.util.List;
 public interface OrdersDao {
     Long newOrder(String customer);
     void addToOrder(long orderId, long dishId, int quantity);
+    RestaurantOrder.OrderStatus getOrderStatus(long orderId);
     Double calculateTotal(long orderId);
     List<RestaurantOrder> getAllOrders();
     void updateRestaurantOrder(long orderId, RestaurantOrder.OrderStatus status);
