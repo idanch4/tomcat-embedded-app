@@ -11,11 +11,13 @@
             function updateStatus() {
               var request = new XMLHttpRequest();
               request.onreadystatechange = function() {
-                if (this.readyState == 4) {
-                  document.getElementById("orderStatus").innerHTML = this.responseText;
+                if (this.readyState == 4 && this.status == 200) {
+                  var order = JSON.parse(this.responseText);
+                  document.getElementById("status").innerHTML = order.status;
+                  document.getElementById("time").innerHTML = order.time;
                 }
               }
-              request.open("GET", "/updateStatus?id=${id}", true);
+              request.open("GET", "/updateStatus?id=${order.id}", true);
               request.send();
             }
 
@@ -23,7 +25,8 @@
         </script>
 
         <p>Thank you - your order has been received. You need to pay ${totalPrice} NIS</p>
-        <p>Order Status: <span id="orderStatus">${status}</span></p>
+        <p>Order Status: <span id="status">${order.status}</span></p>
+        <p>Time updated: <span id="time">${time}</span></p>
 
         <jsp:include page="/jsp/footer.jsp" />
     </body>

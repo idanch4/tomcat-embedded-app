@@ -16,6 +16,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @WebServlet("/thankYou")
 @ServletSecurity(@HttpConstraint(rolesAllowed = {"user", "admin"}))
@@ -29,15 +31,22 @@ public class ThankYouServlet extends HttpServlet {
         }
 
         OrdersDao ordersDao = OrdersDaoFactory.getOrdersDao();
-        RestaurantOrder.OrderStatus orderStatus = ordersDao.getOrderStatus(orderId);
-        Double totalPrice = ordersDao.calculateTotal(orderId);
+        RestaurantOrder order = ordersDao.getOrder(orderId);
+        if (order != null) {
+            request.setAttribute("order", order);
 
-        request.setAttribute("status", orderStatus);
-        request.setAttribute("totalPrice", totalPrice);
-        request.setAttribute("id", orderId);
+            Double totalPrice = ordersDao.calculateTotal(orderId);
+            request.setAttribute("totalPrice", totalPrice);
 
-        ServletContext context = getServletContext();
-        RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/thankYou.jsp");
-        dispatcher.forward(request, response);
+            SimpleDateFormat sdf = new SimpleDateFormat("hh:mm:ss");
+            request.setAttribute("time", sdf.format(new Date()));
+
+            ServletContext context = getServletContext();
+            RequestDispatcher dispatcher = context.getRequestDispatcher("/jsp/thankYou.jsp");
+            dispatcher.forward(request, response);
+        } else {
+            //TODO:: log error
+            return;
+        }
     }
 }

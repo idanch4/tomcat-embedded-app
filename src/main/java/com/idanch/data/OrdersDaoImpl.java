@@ -153,6 +153,37 @@ public class OrdersDaoImpl implements OrdersDao {
     }
 
     @Override
+    public RestaurantOrder getOrder(long id) {
+        try(Connection connection = DriverManager.getConnection(
+                JdbcConfig.H2_URL,
+                JdbcConfig.DB_USERNAME,
+                JdbcConfig.DB_PASSWORD);
+            PreparedStatement stm = connection.prepareStatement("SELECT * FROM orders WHERE id=?")) {
+
+            stm.setLong(1, id);
+            stm.execute();
+            ResultSet resultSet = stm.getResultSet();
+            if (resultSet.next()) {
+                RestaurantOrder order = new RestaurantOrder();
+                try {
+                    order.setCustomer(resultSet.getString("customer"));
+                    order.setId(resultSet.getLong("id"));
+                    order.setStatus(RestaurantOrder.OrderStatus.valueOf(resultSet.getString("status")));
+
+                    strToContents(resultSet.getString("contents"), order);
+                    return order;
+                }catch (Exception exception) {
+                    log.error(exception.getMessage());
+                }
+            }
+
+        }catch(SQLException sqlException) {
+            log.error(sqlException.getMessage());
+        }
+        return null;
+    }
+
+    @Override
     public List<RestaurantOrder> getAllOrders() {
         try (Connection connection = DriverManager.getConnection(
                 JdbcConfig.H2_URL,

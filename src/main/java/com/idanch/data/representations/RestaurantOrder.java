@@ -50,11 +50,11 @@ public class RestaurantOrder {
         this.customer = customer;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public String getStatus() {
+        return status.name();
     }
 
-    public void setStatus(OrderStatus status) {
+    public void setStatus(OrderStatus status){
         this.status = status;
     }
 }
