@@ -4,6 +4,7 @@ import com.idanch.data.interfaces.MenuDao;
 import com.idanch.data.interfaces.OrdersDao;
 import com.idanch.data.representations.Dish;
 import com.idanch.data.representations.RestaurantOrder;
+import com.idanch.data.util.OrdersUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,10 +72,10 @@ public class OrdersDaoImpl implements OrdersDao {
 
                 RestaurantOrder order = new RestaurantOrder();
                 String contentsStr = resultSet.getString("contents");
-                strToContents(contentsStr, order);
+                OrdersUtil.strToContents(contentsStr, order);
 
                 order.addToOrder(dishId, quantity);
-                contentsStrUpdated = contentsToStr(order);
+                contentsStrUpdated = OrdersUtil.contentsToStr(order);
             }
 
             try (PreparedStatement stm = connection.prepareStatement("UPDATE orders SET contents=? WHERE id=?")) {
@@ -102,7 +103,7 @@ public class OrdersDaoImpl implements OrdersDao {
             if (resultSet.next()) {
                 String contentsStr = resultSet.getString("contents");
                 RestaurantOrder order = new RestaurantOrder();
-                strToContents(contentsStr, order);
+                OrdersUtil.strToContents(contentsStr, order);
 
                 Map<Long,Integer> contents = order.getContents();
                 double total = 0.0;
@@ -170,7 +171,7 @@ public class OrdersDaoImpl implements OrdersDao {
                     order.setId(resultSet.getLong("id"));
                     order.setStatus(RestaurantOrder.OrderStatus.valueOf(resultSet.getString("status")));
 
-                    strToContents(resultSet.getString("contents"), order);
+                    OrdersUtil.strToContents(resultSet.getString("contents"), order);
                     return order;
                 }catch (Exception exception) {
                     log.error(exception.getMessage());
@@ -208,7 +209,7 @@ public class OrdersDaoImpl implements OrdersDao {
                 order.setStatus(status);
 
                 if (contentsStr != null) {
-                    strToContents(contentsStr, order);
+                    OrdersUtil.strToContents(contentsStr, order);
                 }
                 orders.add(order);
             }
@@ -234,37 +235,6 @@ public class OrdersDaoImpl implements OrdersDao {
 
         }catch (SQLException sqlException) {
             log.error(sqlException.getMessage());
-        }
-    }
-
-    private String contentsToStr(RestaurantOrder order) {
-        StringBuilder str = new StringBuilder();
-        Map<Long,Integer> contents = order.getContents();
-        for (Map.Entry<Long,Integer> entry: contents.entrySet()){
-            str.append(entry.getKey());
-            str.append(":");
-            str.append(entry.getValue());
-            str.append(",");
-        }
-        return str.toString();
-    }
-
-    public void strToContents(String contentsStr, RestaurantOrder order) {
-        if (contentsStr == null || contentsStr.equals("")) {
-            return;
-        }
-
-        String[] orderItems = contentsStr.split(",");
-        try{
-            //last array item is empty (splitted string ends with ',')
-            for (String orderItem : orderItems) {
-                String[] orderPair = orderItem.split(":");
-                long dishId = Long.parseLong(orderPair[0]);
-                int quantity = Integer.parseInt(orderPair[1]);
-                order.addToOrder(dishId, quantity);
-            }
-        }catch(Exception exception) {
-            log.error("Failed to parse order contents field. Wrong format.");
         }
     }
 }

@@ -9,6 +9,16 @@ public class RestaurantOrder {
     private String customer;
     private OrderStatus status;
 
+    public RestaurantOrder() {
+        this.contents = new HashMap<>();
+    }
+    public RestaurantOrder(long id, String customer) {
+        this.id = id;
+        this.customer = customer;
+        this.contents = new HashMap<>();
+        this.status = OrderStatus.NOT_ORDERED;
+    }
+
     public void addToOrder(long dishId, int quantity) {
         if (contents.containsKey(dishId)) {
             int newQuantity = contents.get(dishId) + quantity;
@@ -16,18 +26,6 @@ public class RestaurantOrder {
         } else {
             contents.put(dishId, quantity);
         }
-    }
-
-    public enum OrderStatus {
-        PENDING,
-        ORDER_ACCEPTED,
-        PAYMENT_RECEIVED,
-        ORDER_PREPARED,
-        READY
-    }
-
-    public RestaurantOrder() {
-        this.contents = new HashMap<>();
     }
 
     public long getId() {
@@ -56,5 +54,14 @@ public class RestaurantOrder {
 
     public void setStatus(OrderStatus status){
         this.status = status;
+    }
+
+    public enum OrderStatus {
+        NOT_ORDERED,
+        PENDING,
+        ORDER_ACCEPTED,
+        PAYMENT_RECEIVED,
+        ORDER_PREPARED,
+        READY;
     }
 }

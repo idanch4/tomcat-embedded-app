@@ -65,6 +65,11 @@
             <artifactId>json</artifactId>
             <version>20190722</version>
         </dependency>
+        <dependency>
+            <groupId>org.apache.tomcat</groupId>
+            <artifactId>tomcat-websocket</artifactId>
+            <version>${tomcat.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <plugins>

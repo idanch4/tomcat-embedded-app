@@ -2,4 +2,4 @@ tomcat.*
 target
 *.iml
 .idea
-.tern-project
+*.tern-project
