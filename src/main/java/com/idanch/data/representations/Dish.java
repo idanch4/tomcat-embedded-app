@@ -1,6 +1,7 @@
 package com.idanch.data.representations;
 
-public class Dish {
+//TODO:: make this class immutable
+public final class Dish {
     private long id;
     private String name;
     private String description;

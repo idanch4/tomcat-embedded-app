@@ -1,5 +1,6 @@
 package com.idanch.data.interfaces;
 
+import com.idanch.data.representations.FullOrder;
 import com.idanch.data.representations.RestaurantOrder;
 
 import java.util.List;
@@ -9,7 +10,8 @@ public interface OrdersDao {
     void addToOrder(long orderId, long dishId, int quantity);
     RestaurantOrder.OrderStatus getOrderStatus(long orderId);
     Double calculateTotal(long orderId);
-    RestaurantOrder getOrder(long id);
+    FullOrder getOrder(long id);
     List<RestaurantOrder> getAllOrders();
+    List<RestaurantOrder> getAllOrdersFrom(long id);
     void updateRestaurantOrder(long orderId, RestaurantOrder.OrderStatus status);
 }

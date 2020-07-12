@@ -1,8 +1,10 @@
 package com.idanch.data;
 
+import com.idanch.data.factories.MenuDaoFactory;
 import com.idanch.data.interfaces.MenuDao;
 import com.idanch.data.interfaces.OrdersDao;
 import com.idanch.data.representations.Dish;
+import com.idanch.data.representations.FullOrder;
 import com.idanch.data.representations.RestaurantOrder;
 import com.idanch.data.util.OrdersUtil;
 import org.slf4j.Logger;
@@ -154,7 +156,7 @@ public class OrdersDaoImpl implements OrdersDao {
     }
 
     @Override
-    public RestaurantOrder getOrder(long id) {
+    public FullOrder getOrder(long id) {
         try(Connection connection = DriverManager.getConnection(
                 JdbcConfig.H2_URL,
                 JdbcConfig.DB_USERNAME,
@@ -172,7 +174,18 @@ public class OrdersDaoImpl implements OrdersDao {
                     order.setStatus(RestaurantOrder.OrderStatus.valueOf(resultSet.getString("status")));
 
                     OrdersUtil.strToContents(resultSet.getString("contents"), order);
-                    return order;
+
+                    //TODO:: bad code, fix RestaurantOrder class
+                    FullOrder fullOrder = new FullOrder();
+                    fullOrder.setId(order.getId());
+                    fullOrder.setCustomer(order.getCustomer());
+                    fullOrder.setStatus(FullOrder.OrderStatus.valueOf(order.getStatus()));
+
+                    MenuDao menuDao = MenuDaoFactory.getMenuDao();
+                    for (long orderId: order.getContents().keySet()) {
+                        fullOrder.addToOrder(menuDao.getDish(orderId), order.getContents().get(orderId));
+                    }
+                    return fullOrder;
                 }catch (Exception exception) {
                     log.error(exception.getMessage());
                 }
@@ -205,6 +218,43 @@ public class OrdersDaoImpl implements OrdersDao {
                         RestaurantOrder.OrderStatus.valueOf(resultSet.getString("status"));
 
                 order.setId(id);
+                order.setCustomer(customer);
+                order.setStatus(status);
+
+                if (contentsStr != null) {
+                    OrdersUtil.strToContents(contentsStr, order);
+                }
+                orders.add(order);
+            }
+            return orders;
+
+        }catch (SQLException sqlException) {
+            log.error(sqlException.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public List<RestaurantOrder> getAllOrdersFrom(long id) {
+        try (Connection connection = DriverManager.getConnection(
+                JdbcConfig.H2_URL,
+                JdbcConfig.DB_USERNAME,
+                JdbcConfig.DB_PASSWORD);
+             PreparedStatement stm = connection.prepareStatement("SELECT * FROM orders WHERE id > ?")) {
+
+            stm.execute();
+            ResultSet resultSet = stm.getResultSet();
+            List<RestaurantOrder> orders = new ArrayList<>();
+            RestaurantOrder order;
+            while (resultSet.next()) {
+                order = new RestaurantOrder();
+                long orderId = resultSet.getLong("id");
+                String customer = resultSet.getString("customer");
+                String contentsStr = resultSet.getString("contents");
+                RestaurantOrder.OrderStatus status =
+                        RestaurantOrder.OrderStatus.valueOf(resultSet.getString("status"));
+
+                order.setId(orderId);
                 order.setCustomer(customer);
                 order.setStatus(status);
 

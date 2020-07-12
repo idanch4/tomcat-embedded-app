@@ -4,6 +4,7 @@ import com.idanch.data.factories.MenuDaoFactory;
 import com.idanch.data.factories.OrdersDaoFactory;
 import com.idanch.data.interfaces.MenuDao;
 import com.idanch.data.interfaces.OrdersDao;
+import com.idanch.data.representations.FullOrder;
 import com.idanch.data.representations.RestaurantOrder;
 
 import javax.servlet.RequestDispatcher;
@@ -31,7 +32,7 @@ public class ThankYouServlet extends HttpServlet {
         }
 
         OrdersDao ordersDao = OrdersDaoFactory.getOrdersDao();
-        RestaurantOrder order = ordersDao.getOrder(orderId);
+        FullOrder order = ordersDao.getOrder(orderId);
         if (order != null) {
             request.setAttribute("order", order);
 

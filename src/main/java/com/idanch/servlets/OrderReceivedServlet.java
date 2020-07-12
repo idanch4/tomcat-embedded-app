@@ -2,6 +2,11 @@ package com.idanch.servlets;
 
 import com.idanch.data.factories.OrdersDaoFactory;
 import com.idanch.data.interfaces.OrdersDao;
+import com.idanch.data.representations.FullOrder;
+import com.idanch.data.representations.RestaurantOrder;
+import com.idanch.data.util.JSONParseUtil;
+import com.idanch.websocket.CheckNewOrdersSessionHandlerFactory;
+import com.idanch.websocket.interfaces.BasicSessionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +29,9 @@ import java.util.Map;
 public class OrderReceivedServlet extends HttpServlet {
 
 	public static final Logger log = LoggerFactory.getLogger(OrderReceivedServlet.class);
+
+	private static final BasicSessionHandler sessionHandler =
+			CheckNewOrdersSessionHandlerFactory.getCheckNewOrdersSessionHandler();
 
 	public void doPost (HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		OrdersDao ordersDao = OrdersDaoFactory.getOrdersDao();
@@ -52,6 +60,11 @@ public class OrderReceivedServlet extends HttpServlet {
 				}
 			}
 		}
+
+		// send new order to client web sockets
+		FullOrder order = ordersDao.getOrder(orderId);
+		String orderJSON = JSONParseUtil.parseAddOrderJSON(order);
+		sessionHandler.sendMessage(orderJSON);
 
 		HttpSession session = request.getSession();
 		session.setAttribute("orderId", orderId);
