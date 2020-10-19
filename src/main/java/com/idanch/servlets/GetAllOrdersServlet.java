@@ -6,7 +6,6 @@ import com.idanch.data.interfaces.MenuDao;
 import com.idanch.data.interfaces.OrdersDao;
 import com.idanch.data.representations.Dish;
 import com.idanch.data.representations.RestaurantOrder;
-import com.idanch.data.util.OrdersUtil;
 import org.json.JSONArray;
 import org.json.JSONObject;
 

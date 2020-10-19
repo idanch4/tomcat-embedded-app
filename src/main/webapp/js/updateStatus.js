@@ -6,7 +6,7 @@ function helloWorld() {
       document.getElementById("status").innerHTML = order.status;
     }
   }
-  request.open("GET", "/updateStatus?id=${id}", true);
+  request.open("GET", "/getStatus?id=${id}", true);
   request.send();
 }
 

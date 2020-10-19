@@ -175,7 +175,6 @@ public class OrdersDaoImpl implements OrdersDao {
 
                     OrdersUtil.strToContents(resultSet.getString("contents"), order);
 
-                    //TODO:: bad code, fix RestaurantOrder class
                     FullOrder fullOrder = new FullOrder();
                     fullOrder.setId(order.getId());
                     fullOrder.setCustomer(order.getCustomer());

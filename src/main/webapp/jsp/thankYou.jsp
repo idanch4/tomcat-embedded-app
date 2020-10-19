@@ -17,7 +17,7 @@
                   document.getElementById("time").innerHTML = order.time;
                 }
               }
-              request.open("GET", "/updateStatus?id=${order.id}", true);
+              request.open("GET", "/getStatus?id=${order.id}", true);
               request.send();
             }
 

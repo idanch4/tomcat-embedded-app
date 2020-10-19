@@ -61,7 +61,7 @@
             <version>1.2</version>
         </dependency>
         <dependency>
-            <groupId>org.json</groupId>
+            <groupId>org.json</groupId>9.0.31
             <artifactId>json</artifactId>
             <version>20190722</version>
         </dependency>

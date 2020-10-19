@@ -3,15 +3,12 @@ package com.idanch.servlets;
 import com.idanch.data.factories.OrdersDaoFactory;
 import com.idanch.data.interfaces.OrdersDao;
 import com.idanch.data.representations.FullOrder;
-import com.idanch.data.representations.RestaurantOrder;
 import com.idanch.data.util.JSONParseUtil;
 import com.idanch.websocket.CheckNewOrdersSessionHandlerFactory;
 import com.idanch.websocket.interfaces.BasicSessionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.HttpConstraint;
 import javax.servlet.annotation.ServletSecurity;

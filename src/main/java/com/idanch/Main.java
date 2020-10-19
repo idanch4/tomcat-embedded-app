@@ -27,33 +27,20 @@ import org.apache.catalina.webresources.StandardRoot;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 
-/**
- * An Example Embedded Apache Tomcat with an anonymous inner class
- * {@link HttpServlet}.
- *
- * @author John Yeary <jyeary@bluelotussoftware.com>
- * @version 1.0.0
- */
 public class Main {
+    public static final Logger log = LoggerFactory.getLogger(Main.class);
 
     /**
      * Main method.
      *
-     * @param args command line arguments passed to the application. Currently
-     * unused.
      * @throws LifecycleException If a life cycle exception occurs.
-     * @throws InterruptedException If the application is interrupted while
-     * waiting for requests.
-     * @throws ServletException If the servlet handling the response has an
-     * exception.
+     * @throws SQLException If the embedded h2 db throws an exception
      */
-    public static final Logger log = LoggerFactory.getLogger(Main.class);
-
     public static void main(String[] args)
             throws LifecycleException, SQLException {
 
@@ -61,8 +48,9 @@ public class Main {
         tomcat.setPort(8082);
         tomcat.getConnector();
 
-        File webappFile = new File("src/main/webapp");
-        StandardContext ctx = (StandardContext) tomcat.addWebapp("", webappFile.getAbsolutePath());
+        Path webappFile = Paths.get("src", "main", "webapp");
+        StandardContext ctx = (StandardContext) tomcat.addWebapp("",
+                webappFile.toAbsolutePath().toString());
 
         WebResourceRoot webResourceRoot = new StandardRoot(ctx);
         WebResourceSet webResourceSet = new DirResourceSet(webResourceRoot,

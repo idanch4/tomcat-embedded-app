@@ -41,7 +41,7 @@ function checkForNewOrders(maxId) {
 }
 
 
-// constructs and adds a div for an @order object
+// constructs and adds a div for an order object
 // @order {id: long, customer: string, status: string, contents: @Dictionary}
 function addOrder(order) {
   if(order.status != "READY") {

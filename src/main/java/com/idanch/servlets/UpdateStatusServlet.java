@@ -16,20 +16,19 @@ import java.io.PrintWriter;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-@WebServlet("/updateStatus")
+@WebServlet("/getStatus")
 public class UpdateStatusServlet extends HttpServlet {
     public static final Logger log = LoggerFactory.getLogger(UpdateStatusServlet.class);
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        try {
+        try (PrintWriter out = resp.getWriter()){
             long orderId = Long.parseLong(req.getParameter("id"));
             OrdersDao ordersDao = OrdersDaoFactory.getOrdersDao();
             RestaurantOrder.OrderStatus status = ordersDao.getOrderStatus(orderId);
 
             resp.setContentType("text/json");
 
-            PrintWriter out = resp.getWriter();
             JSONObject orderJSON = new JSONObject();
             orderJSON.put("status", status);
 
@@ -37,7 +36,6 @@ public class UpdateStatusServlet extends HttpServlet {
             orderJSON.put("time", sdf.format(new Date()));
 
             out.write(orderJSON.toString());
-            out.close();
         }catch(NumberFormatException nfe) {
             log.error("Could not get parameter 'id' from request");
             resp.setStatus(400);
