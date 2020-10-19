@@ -7,7 +7,7 @@
         <!-- header template -->
         <jsp:include page="/jsp/header.jsp" />
 
-        <h1>Welcome to Idan's Restaurant</h1>
+        <h1>Welcome to the Restaurant</h1>
         <h2>Menu:</h2>
         <ul>
             <c:forEach items="${menu}" var="dish">

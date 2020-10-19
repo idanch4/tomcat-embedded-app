@@ -2,7 +2,7 @@
 
 <html>
     <head>
-        <title>Thank You!</title>
+        <title>Thank You Page</title>
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp" />

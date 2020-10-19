@@ -7,7 +7,7 @@
     <body>
         <jsp:include page="/jsp/header.jsp"/>
 
-        <h1>Welcome to Idan's Restaurant</h1>
+        <h1>Welcome to the Restaurant</h1>
         <h2>please choose an order from the menu:</h2>
         <form action='/orderReceived.html' method='post'>
             <ul>

@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
          version="2.4">
 
-    <display-name>Idan's Restaurant</display-name>
+    <display-name>Restaurant</display-name>
     <description>
-        The menu and online ordering system for Idan's Restaurant
+        The menu and online ordering system for our restaurant
     </description>
 
     <!-- role tags are redundant in tomcat, added for complicity -->
@@ -20,12 +20,21 @@
     <login-config>
         <auth-method>FORM</auth-method>
         <form-login-config>
-            <form-login-page>/login.jsp</form-login-page>
-            <form-error-page>/failed-login.jsp</form-error-page>
+            <form-login-page>/jsp/login/login.jsp</form-login-page>
+            <form-error-page>/jsp/login/failed-login.jsp</form-error-page>
         </form-login-config>
     </login-config>
 
     <session-config>
         <session-timeout>120</session-timeout>
     </session-config>
+
+    <error-page>
+        <error-code>404</error-code>
+        <location>/jsp/error_pages/not_found_404.jsp</location>
+    </error-page>
+    <error-page>
+        <error-code>500</error-code>
+        <location>/jsp/error_pages/server_error_500.jsp</location>
+    </error-page>
 </web-app>

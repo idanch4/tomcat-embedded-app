@@ -1,7 +1,7 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <title>Idan's Restaurant - find your favorite dish!</title>
+        <title>Search Page</title>
     </head>
     <body>
         <jsp:include page="/jsp/header.jsp" />
